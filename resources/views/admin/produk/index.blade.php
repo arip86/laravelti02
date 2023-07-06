@@ -1,5 +1,6 @@
 @extends('admin.layout.appadmin')
 @section('content')
+@if(Auth::user()->role != 'pelanggan')
 <h1>Ini adalah produk</h1>
 <div class="container-fluid px-4">
                         <h1 class="mt-4">Tables</h1>
@@ -15,9 +16,11 @@
                             </div>
                         </div>
                         <div class="card mb-4">
-                            <div class="card-header">
-                                <i class="fas fa-table me-1"></i>
-                                DataTable Example
+                            <div class="card-header " >
+                            @if(Auth::user()->role == 'admin')   
+                            <a href="{{url('/produk/create')}}" 
+                                class="btn btn-sm btn-primary">Tambah</a>
+                                @endif
                             </div>
                             <div class="card-body">
                                 <table id="datatablesSimple">
@@ -32,6 +35,7 @@
                                             <th>Minimal Stok</th>
                                             <th>Deskrispi</th>
                                             <th>Kategori Produk</th>
+                                            <th>Aksi</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
@@ -45,6 +49,7 @@
                                             <th>Minimal Stok</th>
                                             <th>Deskrispi</th>
                                             <th>Kategori Produk</th>
+                                            <th>Aksi</th>
                                         </tr>
                                     </tfoot>
                                     <tbody>
@@ -60,6 +65,9 @@
                                             <td>{{$p->min_stok}}</td>
                                             <td>{{$p->deskripsi}}</td>
                                             <td>{{$p->nama_kategori}}</td>
+                                            <td>
+                                                <a href="{{url('produk/edit/'.$p->id)}}" class="btn btn-sm btn-warning">Edit</a>
+                                            </td>
                                         </tr>
                                         @php $no++; @endphp
                                     @endforeach
@@ -68,4 +76,7 @@
                             </div>
                         </div>
                     </div>
+@else 
+@include('admin.access_denied')
+@endif
 @endsection
